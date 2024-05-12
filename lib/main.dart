@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'welcome.dart'; 
-import 'colors.dart'; // Asegúrate de que este import esté correcto
+import 'colors.dart'; 
 
 void main() {
   runApp(const MyApp());
@@ -14,10 +14,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primaryColor: AppColors.primaryColor, // Usa el color primario definido
-        useMaterial3: true,
-        textTheme: TextTheme(
-          headline4: TextStyle(
+        primaryColor: AppColors.primaryColor, 
+        textTheme: const TextTheme(
+          headlineMedium: TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.bold,
             color: Colors.white,
