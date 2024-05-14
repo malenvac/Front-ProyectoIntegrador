@@ -60,6 +60,10 @@ flutter:
 
   assets:
     - assets/carrito_compras.png
+    - assets/icono_carrito.png
+    - assets/icono_home.png
+    - assets/icono_usuario.png
+    - assets/icono_tienda.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

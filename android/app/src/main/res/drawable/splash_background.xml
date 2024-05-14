@@ -7,8 +7,9 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@mipmap/logo_inicial"
+            android:src="@mipmap/ic_launcher"
             android:tileMode="disabled"
+            android:width="100dp" 
             android:antialias="true"
             android:filter="false"/>
     </item>

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_marketplus/navigation_bar.dart';
+
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -10,20 +12,28 @@ class HomeScreen extends StatelessWidget {
       body: Center(
         child: _buildBodyContent(),
       ),
+
+      bottomNavigationBar: CustomNavigationBar(),
+      
     );
   }
 
+  
   
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       backgroundColor: Theme.of(context).primaryColor,
       elevation: 0,
       toolbarHeight: 50,
+      iconTheme: IconThemeData(color: Colors.white), 
     );
   }
 
+
   
   Widget _buildBodyContent() {
-    return Text('Contenido del cuerpo');
+    return Text('Funcionaaa');
   }
+
+  
 }

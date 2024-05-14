@@ -2,17 +2,15 @@ import 'package:flutter/material.dart';
 import 'colors.dart'; 
 import 'imput_text.dart';
 import 'home.dart';
-import 'forgot_password.dart';
 
-
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class ForgotPasswordScreen extends StatefulWidget {
+  const ForgotPasswordScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _ForgotPasswordState createState() => _ForgotPasswordState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _ForgotPasswordState extends State<ForgotPasswordScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -49,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Stack(
               children: [
                 _buildLeftImage(),
-                _buildCenterText('Iniciar sesión', 28),
+                _buildCenterText('Recuperar contraseña', 28),
               ],
             ),
           ),
@@ -91,10 +89,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildBody(BuildContext context) {
     return SingleChildScrollView(  
-      padding: const EdgeInsets.fromLTRB(16.0, 60.0, 16.0, 0.0),  
+      padding: const EdgeInsets.fromLTRB(16.0, 20.0, 16.0, 0.0),  
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
          children: [
+          const Padding(
+            padding: EdgeInsets.fromLTRB(16.0, 20.0, 16.0, 40.0),  
+            child: Text(
+              'Ingresa el correo electrónico para recuperar tu contraseña',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+          ),
         ImputText(
           label: "Correo Electrónico",
           hintText: "correo@example.com",
@@ -102,47 +112,15 @@ class _LoginScreenState extends State<LoginScreen> {
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
         ),
-          ImputText(
-            label: 'Contraseña',
-            hintText: "***********",
-            controller: passwordController,
-            obscureText: true, // Ensure text is obscured for passwords
-            keyboardType: TextInputType.visiblePassword,
-            textInputAction: TextInputAction.done,
-          ),
-          _buildForgotPasswordButton(context),
+         
+          
           _buildLoginButton(context),
       ],
       ),
     );
   }
 
- Widget _buildForgotPasswordButton(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 0, 16, 0), // left, top, right, bottom
-      child: Align(
-        alignment: Alignment.centerRight,
-        child: TextButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) =>  const ForgotPasswordScreen()),
-            );
-          },
-          style: TextButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            foregroundColor: AppColors.black,  
-          ),
-          child: const Text(
-            'Olvidaste tu contraseña',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0,
-            decoration: TextDecoration.underline
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+ 
 
 
 
@@ -151,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
     padding: const EdgeInsets.only(top: 40.0),
     child: Center(  
       child: SizedBox(
-        width: 218.0,
+        width: 250.0,
         child: OutlinedButton(
           onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeScreen())),
           style: OutlinedButton.styleFrom(
@@ -161,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
             textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             padding: const EdgeInsets.symmetric(vertical: 16.0),
           ),
-          child: const Text('Iniciar sesión'),
+          child: const Text('Recuperar contraseña'),
         ),
       ),
     ),

@@ -114,7 +114,7 @@ class WelcomeScreen extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const RegisterScreen()),
+              MaterialPageRoute(builder: (context) =>  const RegisterScreen()),
             );
           },
           style: OutlinedButton.styleFrom(

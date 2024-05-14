@@ -1,9 +1,27 @@
 import 'package:flutter/material.dart';
-import 'colors.dart';  
+import 'colors.dart'; 
+import 'imput_text.dart';
 import 'home.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
+
+  @override
+  _RegisterScreenState createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController userNameController = TextEditingController();
+  final TextEditingController comfirmPasswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +37,7 @@ class RegisterScreen extends StatelessWidget {
       child: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        iconTheme: IconThemeData(color: Colors.white), 
         flexibleSpace: ClipRRect(
           child: Container(
             decoration: BoxDecoration(
@@ -54,14 +73,15 @@ class RegisterScreen extends StatelessWidget {
   }
 
   Widget _buildCenterText(String text, double fontSize) {
-    return const Align(
+    return Align(
       alignment: Alignment.center,
       child: Padding(
-        padding: EdgeInsets.only(top: 20),
-        child: Text('Registrarse',
+        padding: const EdgeInsets.only(top: 20),
+        child: Text(
+          text,
           style: TextStyle(
             color: Colors.white,
-            fontSize: 28,
+            fontSize: fontSize,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -70,32 +90,57 @@ class RegisterScreen extends StatelessWidget {
   }
 
   Widget _buildBody(BuildContext context) {
-    return Center(
+    return SingleChildScrollView(  
+      padding: const EdgeInsets.fromLTRB(16.0, 40.0, 16.0, 0.0),  
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _buildUsernameField(),
+        crossAxisAlignment: CrossAxisAlignment.start,
+         children: [
+        ImputText(
+          label: "Nombre de usuario",
+          hintText: "Magdalena Vanegas",
+          controller: userNameController, // Asegúrate de definir este controlador en tu clase
+          keyboardType: TextInputType.emailAddress,
+          textInputAction: TextInputAction.next,
+        ),
+        ImputText(
+          label: "Correo Electrónico",
+          hintText: "correo@example.com",
+          controller: emailController, // Asegúrate de definir este controlador en tu clase
+          keyboardType: TextInputType.emailAddress,
+          textInputAction: TextInputAction.next,
+        ),
+
+          ImputText(
+            label: 'Contraseña',
+            hintText: "***********",
+            controller: passwordController,
+            obscureText: true, // Ensure text is obscured for passwords
+            keyboardType: TextInputType.visiblePassword,
+            textInputAction: TextInputAction.done,
+          ),
+           ImputText(
+            label: 'Confirmar contraseña',
+            hintText: "***********",
+            controller: comfirmPasswordController,
+            obscureText: true, // Ensure text is obscured for passwords
+            keyboardType: TextInputType.visiblePassword,
+            textInputAction: TextInputAction.done,
+          ),
+          
           _buildLoginButton(context),
-        ],
+      ],
       ),
     );
   }
 
-  Widget _buildUsernameField() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TextFormField(
-        decoration: const InputDecoration(
-          labelText: 'Usuario',
-          border: OutlineInputBorder(),
-        ),
-      ),
-    );
-  }
+ 
+
+
 
   Widget _buildLoginButton(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 40.0),
+  return Padding(
+    padding: const EdgeInsets.only(top: 20.0),
+    child: Center(  
       child: SizedBox(
         width: 218.0,
         child: OutlinedButton(
@@ -110,6 +155,8 @@ class RegisterScreen extends StatelessWidget {
           child: const Text('Registrarse'),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
+
 }
