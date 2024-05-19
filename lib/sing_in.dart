@@ -101,6 +101,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           controller: userNameController, // Asegúrate de definir este controlador en tu clase
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
+          cursorColor: Colors.black,
         ),
         ImputText(
           label: "Correo Electrónico",
@@ -108,6 +109,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           controller: emailController, // Asegúrate de definir este controlador en tu clase
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
+          cursorColor: Colors.black,
         ),
 
           ImputText(
@@ -117,6 +119,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             obscureText: true, // Ensure text is obscured for passwords
             keyboardType: TextInputType.visiblePassword,
             textInputAction: TextInputAction.done,
+            cursorColor: Colors.black,
           ),
            ImputText(
             label: 'Confirmar contraseña',
@@ -125,6 +128,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             obscureText: true, // Ensure text is obscured for passwords
             keyboardType: TextInputType.visiblePassword,
             textInputAction: TextInputAction.done,
+            cursorColor: Colors.black,
           ),
           
           _buildLoginButton(context),

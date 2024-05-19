@@ -111,6 +111,7 @@ class _ForgotPasswordState extends State<ForgotPasswordScreen> {
           controller: emailController, // Asegúrate de definir este controlador en tu clase
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
+          cursorColor: Colors.black,
         ),
          
           

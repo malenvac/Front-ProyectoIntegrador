@@ -9,6 +9,7 @@ class ImputText extends StatelessWidget {
   final bool obscureText;
   final TextInputAction? textInputAction;
   final ValueChanged<String>? onSubmitted;
+  final Color? cursorColor;
 
   const ImputText({
     Key? key,
@@ -19,6 +20,7 @@ class ImputText extends StatelessWidget {
     this.obscureText = false,
     this.textInputAction,
     this.onSubmitted,
+    this.cursorColor,
   }) : super(key: key);
 
   @override
@@ -42,6 +44,7 @@ class ImputText extends StatelessWidget {
             obscureText: obscureText,
             textInputAction: textInputAction,
             onFieldSubmitted: onSubmitted,
+            cursorColor: cursorColor,
             decoration: InputDecoration(
               hintText: hintText,
               fillColor: AppColors.secondaryColor,
