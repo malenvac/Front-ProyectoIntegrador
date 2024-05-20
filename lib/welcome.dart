@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'colors.dart';
 import 'login.dart';
 import 'sing_in.dart';
+import 'social_login_buttons.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -100,6 +101,21 @@ class WelcomeScreen extends StatelessWidget {
           ),
           _buildRegisterButton(context),
           _buildLoginButton(context),
+          const SizedBox(height: 40.0),
+          Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: SocialLoginButtons(
+              onFacebookPressed: () {
+                
+              },
+              onGmailPressed: () {
+                
+              },
+              onLinkedInPressed: () {
+                
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -114,7 +130,7 @@ class WelcomeScreen extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) =>  const RegisterScreen()),
+              MaterialPageRoute(builder: (context) => const RegisterScreen()),
             );
           },
           style: OutlinedButton.styleFrom(

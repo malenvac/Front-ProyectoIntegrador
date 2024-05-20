@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'colors.dart'; 
 import 'imput_text.dart';
 import 'home.dart';
+import 'social_login_buttons.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -98,7 +99,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ImputText(
           label: "Nombre de usuario",
           hintText: "Magdalena Vanegas",
-          controller: userNameController, // Asegúrate de definir este controlador en tu clase
+          controller: userNameController, 
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
           cursorColor: Colors.black,
@@ -106,7 +107,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ImputText(
           label: "Correo Electrónico",
           hintText: "correo@example.com",
-          controller: emailController, // Asegúrate de definir este controlador en tu clase
+          controller: emailController, 
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
           cursorColor: Colors.black,
@@ -116,7 +117,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             label: 'Contraseña',
             hintText: "***********",
             controller: passwordController,
-            obscureText: true, // Ensure text is obscured for passwords
+            obscureText: true, 
             keyboardType: TextInputType.visiblePassword,
             textInputAction: TextInputAction.done,
             cursorColor: Colors.black,
@@ -125,13 +126,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
             label: 'Confirmar contraseña',
             hintText: "***********",
             controller: comfirmPasswordController,
-            obscureText: true, // Ensure text is obscured for passwords
+            obscureText: true, 
             keyboardType: TextInputType.visiblePassword,
             textInputAction: TextInputAction.done,
             cursorColor: Colors.black,
           ),
           
           _buildLoginButton(context),
+          const SizedBox(height: 40.0),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10.0),
+            child: SocialLoginButtons(
+              onFacebookPressed: () {
+                
+              },
+              onGmailPressed: () {
+                
+              },
+              onLinkedInPressed: () {
+                
+              },
+            ),
+          ),
+        
       ],
       ),
     );
