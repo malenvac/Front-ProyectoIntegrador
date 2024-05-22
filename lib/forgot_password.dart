@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'colors.dart'; 
+import 'colors.dart';
 import 'imput_text.dart';
 import 'home.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
-  const ForgotPasswordScreen({Key? key}) : super(key: key);
+  const ForgotPasswordScreen({super.key});
 
   @override
   _ForgotPasswordState createState() => _ForgotPasswordState();
@@ -35,7 +35,7 @@ class _ForgotPasswordState extends State<ForgotPasswordScreen> {
       child: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: IconThemeData(color: Colors.white), 
+        iconTheme: const IconThemeData(color: Colors.white),
         flexibleSpace: ClipRRect(
           child: Container(
             decoration: BoxDecoration(
@@ -88,13 +88,13 @@ class _ForgotPasswordState extends State<ForgotPasswordScreen> {
   }
 
   Widget _buildBody(BuildContext context) {
-    return SingleChildScrollView(  
-      padding: const EdgeInsets.fromLTRB(16.0, 20.0, 16.0, 0.0),  
+    return SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(16.0, 20.0, 16.0, 0.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-         children: [
+        children: [
           const Padding(
-            padding: EdgeInsets.fromLTRB(16.0, 20.0, 16.0, 40.0),  
+            padding: EdgeInsets.fromLTRB(16.0, 20.0, 16.0, 40.0),
             child: Text(
               'Ingresa el correo electrónico para recuperar tu contraseña',
               textAlign: TextAlign.center,
@@ -105,46 +105,41 @@ class _ForgotPasswordState extends State<ForgotPasswordScreen> {
               ),
             ),
           ),
-        ImputText(
-          label: "Correo Electrónico",
-          hintText: "correo@example.com",
-          controller: emailController, // Asegúrate de definir este controlador en tu clase
-          keyboardType: TextInputType.emailAddress,
-          textInputAction: TextInputAction.next,
-          cursorColor: Colors.black,
-        ),
-         
-          
+          ImputText(
+            label: "Correo Electrónico",
+            hintText: "correo@example.com",
+            controller: emailController,
+            keyboardType: TextInputType.emailAddress,
+            textInputAction: TextInputAction.next,
+            cursorColor: Colors.black,
+          ),
           _buildLoginButton(context),
-      ],
+        ],
       ),
     );
   }
 
- 
-
-
-
   Widget _buildLoginButton(BuildContext context) {
-  return Padding(
-    padding: const EdgeInsets.only(top: 40.0),
-    child: Center(  
-      child: SizedBox(
-        width: 250.0,
-        child: OutlinedButton(
-          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeScreen())),
-          style: OutlinedButton.styleFrom(
-            backgroundColor: AppColors.secondaryColor,
-            foregroundColor: Colors.black,
-            side: BorderSide(color: Theme.of(context).primaryColor, width: 2),
-            textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
+    return Padding(
+      padding: const EdgeInsets.only(top: 40.0),
+      child: Center(
+        child: SizedBox(
+          width: 250.0,
+          child: OutlinedButton(
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const HomeScreen())),
+            style: OutlinedButton.styleFrom(
+              backgroundColor: AppColors.secondaryColor,
+              foregroundColor: Colors.black,
+              side: BorderSide(color: Theme.of(context).primaryColor, width: 2),
+              textStyle:
+                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+            ),
+            child: const Text('Recuperar contraseña'),
           ),
-          child: const Text('Recuperar contraseña'),
         ),
       ),
-    ),
-  );
-}
-
+    );
+  }
 }

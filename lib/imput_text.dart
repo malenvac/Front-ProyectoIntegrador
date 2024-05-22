@@ -10,9 +10,10 @@ class ImputText extends StatelessWidget {
   final TextInputAction? textInputAction;
   final ValueChanged<String>? onSubmitted;
   final Color? cursorColor;
+  final String? Function(String?)? validator;  
 
   const ImputText({
-    Key? key,
+    super.key,
     required this.label,
     required this.hintText,
     this.controller,
@@ -21,7 +22,8 @@ class ImputText extends StatelessWidget {
     this.textInputAction,
     this.onSubmitted,
     this.cursorColor,
-  }) : super(key: key);
+    this.validator,  
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,7 @@ class ImputText extends StatelessWidget {
             textInputAction: textInputAction,
             onFieldSubmitted: onSubmitted,
             cursorColor: cursorColor,
+            validator: validator,  
             decoration: InputDecoration(
               hintText: hintText,
               fillColor: AppColors.secondaryColor,

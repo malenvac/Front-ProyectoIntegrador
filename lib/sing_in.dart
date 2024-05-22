@@ -1,34 +1,24 @@
 import 'package:flutter/material.dart';
-import 'colors.dart'; 
-import 'imput_text.dart';
-import 'home.dart';
-import 'social_login_buttons.dart';
+import 'package:frontend_marketplus/colors.dart';
+import 'package:frontend_marketplus/imput_text.dart';
+import 'package:frontend_marketplus/social_login_buttons.dart';
+import 'package:frontend_marketplus/services/api_service.dart';
+import 'package:frontend_marketplus/utils/validators.dart';
 
-class RegisterScreen extends StatefulWidget {
+import 'package:frontend_marketplus/register_bloc.dart';
+import 'package:provider/provider.dart';
+
+class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
 
   @override
-  _RegisterScreenState createState() => _RegisterScreenState();
-}
-
-class _RegisterScreenState extends State<RegisterScreen> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController userNameController = TextEditingController();
-  final TextEditingController comfirmPasswordController = TextEditingController();
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(context),
-      body: _buildBody(context),
+    return ChangeNotifierProvider(
+      create: (_) => RegisterBloc(apiService: ApiService(baseUrl: 'http://localhost:9090')),
+      child: Scaffold(
+        appBar: _buildAppBar(context),
+        body: _buildBody(context),
+      ),
     );
   }
 
@@ -38,7 +28,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: IconThemeData(color: Colors.white), 
+        iconTheme: const IconThemeData(color: Colors.white),
         flexibleSpace: ClipRRect(
           child: Container(
             decoration: BoxDecoration(
@@ -91,93 +81,95 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget _buildBody(BuildContext context) {
-    return SingleChildScrollView(  
-      padding: const EdgeInsets.fromLTRB(16.0, 40.0, 16.0, 0.0),  
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-         children: [
-        ImputText(
-          label: "Nombre de usuario",
-          hintText: "Magdalena Vanegas",
-          controller: userNameController, 
-          keyboardType: TextInputType.emailAddress,
-          textInputAction: TextInputAction.next,
-          cursorColor: Colors.black,
-        ),
-        ImputText(
-          label: "Correo Electrónico",
-          hintText: "correo@example.com",
-          controller: emailController, 
-          keyboardType: TextInputType.emailAddress,
-          textInputAction: TextInputAction.next,
-          cursorColor: Colors.black,
-        ),
-
-          ImputText(
-            label: 'Contraseña',
-            hintText: "***********",
-            controller: passwordController,
-            obscureText: true, 
-            keyboardType: TextInputType.visiblePassword,
-            textInputAction: TextInputAction.done,
-            cursorColor: Colors.black,
-          ),
-           ImputText(
-            label: 'Confirmar contraseña',
-            hintText: "***********",
-            controller: comfirmPasswordController,
-            obscureText: true, 
-            keyboardType: TextInputType.visiblePassword,
-            textInputAction: TextInputAction.done,
-            cursorColor: Colors.black,
-          ),
-          
-          _buildLoginButton(context),
-          const SizedBox(height: 40.0),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10.0),
-            child: SocialLoginButtons(
-              onFacebookPressed: () {
-                
-              },
-              onGmailPressed: () {
-                
-              },
-              onLinkedInPressed: () {
-                
-              },
+    final registerBloc = Provider.of<RegisterBloc>(context);
+    return SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(16.0, 40.0, 16.0, 0.0),
+      child: Form(
+        key: registerBloc.formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ImputText(
+              label: "Nombre de usuario",
+              hintText: "Magdalena Vanegas",
+              controller: registerBloc.userNameController,
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.next,
+              cursorColor: Colors.black,
+              validator: Validators.validateUsername,
             ),
-          ),
-        
-      ],
+            ImputText(
+              label: "Correo Electrónico",
+              hintText: "correo@example.com",
+              controller: registerBloc.emailController,
+              keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
+              cursorColor: Colors.black,
+              validator: Validators.validateEmail,
+            ),
+            ImputText(
+              label: 'Contraseña',
+              hintText: "***********",
+              controller: registerBloc.passwordController,
+              obscureText: true,
+              keyboardType: TextInputType.visiblePassword,
+              textInputAction: TextInputAction.next,
+              cursorColor: Colors.black,
+              validator: Validators.validatePassword,
+            ),
+            ImputText(
+              label: 'Confirmar contraseña',
+              hintText: "***********",
+              controller: registerBloc.confirmPasswordController,
+              obscureText: true,
+              keyboardType: TextInputType.visiblePassword,
+              textInputAction: TextInputAction.done,
+              cursorColor: Colors.black,
+              validator: (value) => Validators.validateConfirmPassword(value, registerBloc.passwordController.text),
+            ),
+            _buildRegisterButton(context, registerBloc),
+            const SizedBox(height: 40.0),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: SocialLoginButtons(
+                onFacebookPressed: () {
+                  
+                },
+                onGmailPressed: () {
+                  
+                },
+                onLinkedInPressed: () {
+                  
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
- 
-
-
-
-  Widget _buildLoginButton(BuildContext context) {
-  return Padding(
-    padding: const EdgeInsets.only(top: 20.0),
-    child: Center(  
-      child: SizedBox(
-        width: 218.0,
-        child: OutlinedButton(
-          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const HomeScreen())),
-          style: OutlinedButton.styleFrom(
-            backgroundColor: AppColors.secondaryColor,
-            foregroundColor: Colors.black,
-            side: BorderSide(color: Theme.of(context).primaryColor, width: 2),
-            textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
+  Widget _buildRegisterButton(BuildContext context, RegisterBloc registerBloc) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0),
+      child: Center(
+        child: SizedBox(
+          width: 218.0,
+          child: OutlinedButton(
+            onPressed: registerBloc.isLoading ? null : () => registerBloc.register(context),
+            style: OutlinedButton.styleFrom(
+              backgroundColor: AppColors.secondaryColor,
+              foregroundColor: Colors.black,
+              side: BorderSide(color: Theme.of(context).primaryColor, width: 2),
+              textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+            ),
+            child: registerBloc.isLoading
+                ? const CircularProgressIndicator()
+                : const Text('Registrarse'),
           ),
-          child: const Text('Registrarse'),
         ),
       ),
-    ),
-  );
-}
-
+    );
+  }
 }
