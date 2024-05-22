@@ -1,58 +1,22 @@
 import 'package:flutter/material.dart';
-import 'colors.dart'; 
+import 'package:provider/provider.dart';
+import 'login_bloc.dart';
+import 'colors.dart';
 import 'imput_text.dart';
-import 'home.dart';
 import 'forgot_password.dart';
 import 'social_login_buttons.dart';
-import 'package:frontend_marketplus/services/api_service.dart';
-import 'package:frontend_marketplus/utils/validators.dart'; 
+import 'utils/validators.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
-
-  @override
-  _LoginScreenState createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final ApiService apiService = ApiService(baseUrl: 'http://localhost:9090'); 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
-
-  void _login() async {
-    if (_formKey.currentState!.validate()) {
-      final response = await apiService.loginUser(
-        emailController.text,
-        passwordController.text,
-      );
-      if (response.statusCode == 200) {
-        
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
-        );
-      } else {
-        
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error al iniciar sesión. Por favor, verifica tus credenciales.')),
-        );
-      }
-    }
-  }
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final loginBloc = Provider.of<LoginBloc>(context);
+
     return Scaffold(
       appBar: _buildAppBar(context),
-      body: _buildBody(context),
+      body: _buildBody(context, loginBloc),
     );
   }
 
@@ -62,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.white), 
+        iconTheme: const IconThemeData(color: Colors.white),
         flexibleSpace: ClipRRect(
           child: Container(
             decoration: BoxDecoration(
@@ -114,46 +78,40 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildBody(BuildContext context) {
-    return SingleChildScrollView(  
-      padding: const EdgeInsets.fromLTRB(16.0, 60.0, 16.0, 0.0),  
+  Widget _buildBody(BuildContext context, LoginBloc loginBloc) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(16.0, 60.0, 16.0, 0.0),
       child: Form(
-        key: _formKey,
+        key: loginBloc.formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ImputText(
               label: "Correo Electrónico",
               hintText: "correo@example.com",
-              controller: emailController,
+              controller: loginBloc.emailController,
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
-              validator: Validators.validateEmail, 
+              validator: Validators.validateEmail,
             ),
             ImputText(
               label: 'Contraseña',
               hintText: "***********",
-              controller: passwordController,
+              controller: loginBloc.passwordController,
               obscureText: true,
               keyboardType: TextInputType.visiblePassword,
               textInputAction: TextInputAction.done,
-              validator: Validators.validatePassword, 
+              validator: Validators.validatePassword,
             ),
             _buildForgotPasswordButton(context),
-            _buildLoginButton(context),
+            _buildLoginButton(context, loginBloc),
             const SizedBox(height: 40.0),
             Padding(
               padding: const EdgeInsets.only(top: 30.0),
               child: SocialLoginButtons(
-                onFacebookPressed: () {
-                  
-                },
-                onGmailPressed: () {
-                  
-                },
-                onLinkedInPressed: () {
-                  
-                },
+                onFacebookPressed: () {},
+                onGmailPressed: () {},
+                onLinkedInPressed: () {},
               ),
             ),
           ],
@@ -171,12 +129,13 @@ class _LoginScreenState extends State<LoginScreen> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const ForgotPasswordScreen()),
+              MaterialPageRoute(
+                  builder: (context) => const ForgotPasswordScreen()),
             );
           },
           style: TextButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
-            foregroundColor: AppColors.black,  
+            foregroundColor: AppColors.black,
           ),
           child: const Text(
             'Olvidaste tu contraseña',
@@ -191,22 +150,26 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildLoginButton(BuildContext context) {
+  Widget _buildLoginButton(BuildContext context, LoginBloc loginBloc) {
     return Padding(
       padding: const EdgeInsets.only(top: 40.0),
       child: Center(
         child: SizedBox(
           width: 218.0,
           child: OutlinedButton(
-            onPressed: _login,
+            onPressed:
+                loginBloc.isLoading ? null : () => loginBloc.login(context),
             style: OutlinedButton.styleFrom(
               backgroundColor: AppColors.secondaryColor,
               foregroundColor: Colors.black,
               side: BorderSide(color: Theme.of(context).primaryColor, width: 2),
-              textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              textStyle:
+                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               padding: const EdgeInsets.symmetric(vertical: 16.0),
             ),
-            child: const Text('Iniciar sesión'),
+            child: loginBloc.isLoading
+                ? const CircularProgressIndicator()
+                : const Text('Iniciar sesión'),
           ),
         ),
       ),

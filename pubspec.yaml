@@ -69,6 +69,7 @@ flutter:
     - assets/facebook.png
     - assets/gmail.png
     - assets/linkedin.png
+    - assets/search.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

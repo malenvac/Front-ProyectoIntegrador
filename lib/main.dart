@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'welcome.dart'; 
 import 'colors.dart'; 
+import 'login_bloc.dart';
+import 'services/api_service.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => LoginBloc(apiService: ApiService(baseUrl: 'http://localhost:9090')),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -28,4 +40,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
