@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'colors.dart';
+import '../../../../colors.dart';
 
 class SearchBarP extends StatelessWidget {
   final TextEditingController controller;

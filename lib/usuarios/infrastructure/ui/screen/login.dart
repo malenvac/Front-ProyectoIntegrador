@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'login_bloc.dart';
-import 'colors.dart';
-import 'imput_text.dart';
+import '../../../../colors.dart';
+import '../widget/imput_text.dart';
 import 'forgot_password.dart';
-import 'social_login_buttons.dart';
-import 'utils/validators.dart';
+import '../widget/social_login_buttons.dart';
+import '../utils/validators.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
+
+  LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final loginBloc = Provider.of<LoginBloc>(context);
-
     return Scaffold(
       appBar: _buildAppBar(context),
-      body: _buildBody(context, loginBloc),
+      body: _buildBody(context),
     );
   }
 
@@ -78,18 +79,18 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBody(BuildContext context, LoginBloc loginBloc) {
+  Widget _buildBody(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(16.0, 60.0, 16.0, 0.0),
       child: Form(
-        key: loginBloc.formKey,
+        key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ImputText(
               label: "Correo Electrónico",
               hintText: "correo@example.com",
-              controller: loginBloc.emailController,
+              controller: _emailController,
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
               validator: Validators.validateEmail,
@@ -97,14 +98,14 @@ class LoginScreen extends StatelessWidget {
             ImputText(
               label: 'Contraseña',
               hintText: "***********",
-              controller: loginBloc.passwordController,
+              controller: _passwordController,
               obscureText: true,
               keyboardType: TextInputType.visiblePassword,
               textInputAction: TextInputAction.done,
               validator: Validators.validatePassword,
             ),
             _buildForgotPasswordButton(context),
-            _buildLoginButton(context, loginBloc),
+            _buildLoginButton(context),
             const SizedBox(height: 40.0),
             Padding(
               padding: const EdgeInsets.only(top: 30.0),
@@ -150,29 +151,31 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildLoginButton(BuildContext context, LoginBloc loginBloc) {
+  Widget _buildLoginButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 40.0),
       child: Center(
         child: SizedBox(
           width: 218.0,
           child: OutlinedButton(
-            onPressed:
-                loginBloc.isLoading ? null : () => loginBloc.login(context),
+            onPressed: _isLoading ? null : () => _login(context),
             style: OutlinedButton.styleFrom(
               backgroundColor: AppColors.secondaryColor,
               foregroundColor: Colors.black,
               side: BorderSide(color: Theme.of(context).primaryColor, width: 2),
-              textStyle:
-                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               padding: const EdgeInsets.symmetric(vertical: 16.0),
             ),
-            child: loginBloc.isLoading
+            child: _isLoading
                 ? const CircularProgressIndicator()
                 : const Text('Iniciar sesión'),
           ),
         ),
       ),
     );
+  }
+
+  void _login(BuildContext context) {
+    // Implementation of the login logic
   }
 }

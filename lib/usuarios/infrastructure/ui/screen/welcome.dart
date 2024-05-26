@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'colors.dart';
+import 'package:frontend_marketplus/usuarios/app/registrar_usuario.dart';
+import 'package:frontend_marketplus/usuarios/infrastructure/rest/usuario_rest_repository.dart';
+import '../../../../colors.dart';
 import 'login.dart';
 import 'sing_in.dart';
-import 'social_login_buttons.dart';
+import '../widget/social_login_buttons.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -105,15 +107,9 @@ class WelcomeScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 20.0),
             child: SocialLoginButtons(
-              onFacebookPressed: () {
-                
-              },
-              onGmailPressed: () {
-                
-              },
-              onLinkedInPressed: () {
-                
-              },
+              onFacebookPressed: () {},
+              onGmailPressed: () {},
+              onLinkedInPressed: () {},
             ),
           ),
         ],
@@ -130,7 +126,11 @@ class WelcomeScreen extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const RegisterScreen()),
+              MaterialPageRoute(
+                  builder: (context) => RegisterScreen(
+                        registrarUsuario:
+                            RegistrarUsuario(UsuarioRestRepository()),
+                      )),
             );
           },
           style: OutlinedButton.styleFrom(
@@ -158,7 +158,7 @@ class WelcomeScreen extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const LoginScreen()),
+              MaterialPageRoute(builder: (context) => LoginScreen()),
             );
           },
           style: OutlinedButton.styleFrom(

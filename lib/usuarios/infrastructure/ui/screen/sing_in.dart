@@ -1,24 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_marketplus/colors.dart';
-import 'package:frontend_marketplus/imput_text.dart';
-import 'package:frontend_marketplus/social_login_buttons.dart';
-import 'package:frontend_marketplus/services/api_service.dart';
-import 'package:frontend_marketplus/utils/validators.dart';
+import 'package:frontend_marketplus/usuarios/app/registrar_usuario.dart';
+import 'package:frontend_marketplus/usuarios/domain/model/sign_up_request.dart';
+import 'package:frontend_marketplus/usuarios/infrastructure/ui/widget/imput_text.dart';
+import 'package:frontend_marketplus/usuarios/infrastructure/ui/widget/social_login_buttons.dart';
+import 'package:frontend_marketplus/usuarios/infrastructure/ui/utils/validators.dart';
 
-import 'package:frontend_marketplus/register_bloc.dart';
-import 'package:provider/provider.dart';
+class RegisterScreen extends StatefulWidget {
+  final RegistrarUsuario registrarUsuario;
 
-class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({super.key});
+  RegisterScreen({super.key, required this.registrarUsuario});
+
+  @override
+  _RegisterScreenState createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => RegisterBloc(apiService: ApiService(baseUrl: 'http://localhost:9090')),
-      child: Scaffold(
-        appBar: _buildAppBar(context),
-        body: _buildBody(context),
-      ),
+    return Scaffold(
+      appBar: _buildAppBar(context),
+      body: _buildBody(context),
     );
   }
 
@@ -81,18 +90,17 @@ class RegisterScreen extends StatelessWidget {
   }
 
   Widget _buildBody(BuildContext context) {
-    final registerBloc = Provider.of<RegisterBloc>(context);
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(16.0, 40.0, 16.0, 0.0),
       child: Form(
-        key: registerBloc.formKey,
+        key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ImputText(
               label: "Nombre de usuario",
               hintText: "Magdalena Vanegas",
-              controller: registerBloc.userNameController,
+              controller: _userNameController,
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.next,
               cursorColor: Colors.black,
@@ -101,7 +109,7 @@ class RegisterScreen extends StatelessWidget {
             ImputText(
               label: "Correo Electrónico",
               hintText: "correo@example.com",
-              controller: registerBloc.emailController,
+              controller: _emailController,
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
               cursorColor: Colors.black,
@@ -110,7 +118,7 @@ class RegisterScreen extends StatelessWidget {
             ImputText(
               label: 'Contraseña',
               hintText: "***********",
-              controller: registerBloc.passwordController,
+              controller: _passwordController,
               obscureText: true,
               keyboardType: TextInputType.visiblePassword,
               textInputAction: TextInputAction.next,
@@ -120,27 +128,21 @@ class RegisterScreen extends StatelessWidget {
             ImputText(
               label: 'Confirmar contraseña',
               hintText: "***********",
-              controller: registerBloc.confirmPasswordController,
+              controller: _confirmPasswordController,
               obscureText: true,
               keyboardType: TextInputType.visiblePassword,
               textInputAction: TextInputAction.done,
               cursorColor: Colors.black,
-              validator: (value) => Validators.validateConfirmPassword(value, registerBloc.passwordController.text),
+              validator: (value) => Validators.validateConfirmPassword(value, _passwordController.text),
             ),
-            _buildRegisterButton(context, registerBloc),
+            _buildRegisterButton(context),
             const SizedBox(height: 40.0),
             Padding(
               padding: const EdgeInsets.only(bottom: 10.0),
               child: SocialLoginButtons(
-                onFacebookPressed: () {
-                  
-                },
-                onGmailPressed: () {
-                  
-                },
-                onLinkedInPressed: () {
-                  
-                },
+                onFacebookPressed: () {},
+                onGmailPressed: () {},
+                onLinkedInPressed: () {},
               ),
             ),
           ],
@@ -149,14 +151,14 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildRegisterButton(BuildContext context, RegisterBloc registerBloc) {
+  Widget _buildRegisterButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0),
       child: Center(
         child: SizedBox(
           width: 218.0,
           child: OutlinedButton(
-            onPressed: registerBloc.isLoading ? null : () => registerBloc.register(context),
+            onPressed: _isLoading ? null : () => _register(context),
             style: OutlinedButton.styleFrom(
               backgroundColor: AppColors.secondaryColor,
               foregroundColor: Colors.black,
@@ -164,12 +166,38 @@ class RegisterScreen extends StatelessWidget {
               textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               padding: const EdgeInsets.symmetric(vertical: 16.0),
             ),
-            child: registerBloc.isLoading
+            child: _isLoading
                 ? const CircularProgressIndicator()
                 : const Text('Registrarse'),
           ),
         ),
       ),
     );
+  }
+
+  void _register(BuildContext context) async {
+    if (_formKey.currentState!.validate()) {
+      setState(() => _isLoading = true);
+      try {
+        final signUpRequest = SignUpRequest(
+          nombre: _userNameController.text,
+          correo: _emailController.text,
+          password: _passwordController.text,
+        );
+
+        final usuario = await widget.registrarUsuario.run(signUpRequest);
+        setState(() => _isLoading = false);
+
+        // Aquí puedes dirigir al usuario a otra pantalla o mostrar un mensaje de éxito.
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Registro exitoso: ${usuario.nombre}")),
+        );
+      } catch (e) {
+        setState(() => _isLoading = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error al registrar: ${e.toString()}")),
+        );
+      }
+    }
   }
 }

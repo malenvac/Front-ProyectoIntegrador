@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'colors.dart';
-import 'imput_text.dart';
+import '../../../../colors.dart';
+import '../widget/imput_text.dart';
 import 'home.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
