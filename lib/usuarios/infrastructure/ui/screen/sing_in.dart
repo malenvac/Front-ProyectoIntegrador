@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_marketplus/colors.dart';
-import 'package:frontend_marketplus/usuarios/app/registrar_usuario.dart';
+import 'package:frontend_marketplus/usuarios/app/singup.dart';
 import 'package:frontend_marketplus/usuarios/domain/model/sign_up_request.dart';
 import 'package:frontend_marketplus/usuarios/infrastructure/ui/widget/imput_text.dart';
 import 'package:frontend_marketplus/usuarios/infrastructure/ui/widget/social_login_buttons.dart';
 import 'package:frontend_marketplus/usuarios/infrastructure/ui/utils/validators.dart';
 
+import 'home.dart';
+
 class RegisterScreen extends StatefulWidget {
-  final RegistrarUsuario registrarUsuario;
+  final SignUp registrarUsuario;
 
   RegisterScreen({super.key, required this.registrarUsuario});
 
@@ -180,18 +182,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
       setState(() => _isLoading = true);
       try {
         final signUpRequest = SignUpRequest(
-          nombre: _userNameController.text,
-          correo: _emailController.text,
+          name: _userNameController.text,
+          email: _emailController.text,
           password: _passwordController.text,
         );
 
-        final usuario = await widget.registrarUsuario.run(signUpRequest);
+        final user = await widget.registrarUsuario.run(signUpRequest);
         setState(() => _isLoading = false);
 
-        // Aquí puedes dirigir al usuario a otra pantalla o mostrar un mensaje de éxito.
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Registro exitoso: ${usuario.nombre}")),
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => HomeScreen(user: user),
+          )
         );
+
       } catch (e) {
         setState(() => _isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(

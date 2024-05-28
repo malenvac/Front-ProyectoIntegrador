@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_marketplus/usuarios/domain/model/user.dart';
 import '../widget/search_bar.dart';
 import '../widget/navigation_bar.dart'; 
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
 
+  final User? user;
+
+  static const String routeName = "HomeScreen";
+
+  const HomeScreen({super.key, this.user});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +30,7 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).primaryColor,
       elevation: 0,
       toolbarHeight: 50,
-      iconTheme: const IconThemeData(color: Colors.white), 
+      iconTheme: const IconThemeData(color: Colors.white),
     );
   }
 
@@ -31,14 +42,20 @@ class HomeScreen extends StatelessWidget {
           child: SearchBarP(
             controller: TextEditingController(),
             onSearch: (value) {
-             
+
               print("Buscar: $value");
             },
           ),
         ),
-        const Expanded(
+         Expanded(
           child: Center(
-            child: Text('Funcionaaa'),
+            child: Column(
+              children: [
+                Text('Funcionaaa'),
+                Text("name: ${widget.user!.name}"),
+                Text("email: ${widget.user!.email}"),
+              ],
+            ),
           ),
         ),
       ],

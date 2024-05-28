@@ -2,10 +2,10 @@
 import 'package:frontend_marketplus/usuarios/domain/model/login_request.dart';
 import 'package:frontend_marketplus/usuarios/domain/model/login_response.dart';
 import 'package:frontend_marketplus/usuarios/domain/model/sign_up_request.dart';
-import 'package:frontend_marketplus/usuarios/domain/model/usuario.dart';
+import 'package:frontend_marketplus/usuarios/domain/model/user.dart';
 
-abstract class UsuarioRepository {
+abstract class UserRepository {
 
-    Future<Usuario> registrar(SignUpRequest signUpRequest);
-    Future<LoginResponse> iniciarSesion(LoginRequest loginRequest);
+    Future<User> signUp(SignUpRequest signUpRequest);
+    Future<LoginResponse> login(LoginRequest loginRequest);
 }

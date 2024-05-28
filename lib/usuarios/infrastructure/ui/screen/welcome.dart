@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_marketplus/usuarios/app/registrar_usuario.dart';
-import 'package:frontend_marketplus/usuarios/infrastructure/rest/usuario_rest_repository.dart';
+import 'package:frontend_marketplus/usuarios/app/singup.dart';
+import 'package:frontend_marketplus/usuarios/infrastructure/rest/user_rest_repository.dart';
 import '../../../../colors.dart';
 import 'login.dart';
 import 'sing_in.dart';
@@ -129,7 +129,7 @@ class WelcomeScreen extends StatelessWidget {
               MaterialPageRoute(
                   builder: (context) => RegisterScreen(
                         registrarUsuario:
-                            RegistrarUsuario(UsuarioRestRepository()),
+                            SignUp(UserRestRepository()),
                       )),
             );
           },
