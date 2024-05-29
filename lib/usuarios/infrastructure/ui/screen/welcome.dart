@@ -81,18 +81,18 @@ class WelcomeScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           const Text(
-            'Tiendas locales al alcance de tu mano',
+            'Marketplus',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.black,
-              fontSize: 22,
+              fontSize: 26,
               fontWeight: FontWeight.bold,
             ),
           ),
           const Padding(
             padding: EdgeInsets.only(top: 40.0),
             child: Text(
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+              'Tiendas locales al alcance de tu mano',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.black,

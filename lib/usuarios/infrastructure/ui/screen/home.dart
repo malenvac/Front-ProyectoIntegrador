@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:frontend_marketplus/usuarios/domain/model/user.dart';
 import '../widget/search_bar.dart';
-import '../widget/navigation_bar.dart'; 
+import '../widget/navigation_bar.dart';
 
 class HomeScreen extends StatefulWidget {
-
   final User? user;
 
   static const String routeName = "HomeScreen";
@@ -21,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: _buildAppBar(context),
       body: _buildBodyContent(context),
-      bottomNavigationBar: const CustomNavigationBar(),
+      bottomNavigationBar: CustomNavigationBar(user: widget.user),
     );
   }
 
@@ -42,12 +41,11 @@ class _HomeScreenState extends State<HomeScreen> {
           child: SearchBarP(
             controller: TextEditingController(),
             onSearch: (value) {
-
               print("Buscar: $value");
             },
           ),
         ),
-         Expanded(
+        Expanded(
           child: Center(
             child: Column(
               children: [
