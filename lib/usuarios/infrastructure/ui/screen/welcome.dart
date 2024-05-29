@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_marketplus/usuarios/app/login.dart';
 import 'package:frontend_marketplus/usuarios/app/singup.dart';
 import 'package:frontend_marketplus/usuarios/infrastructure/rest/user_rest_repository.dart';
 import '../../../../colors.dart';
@@ -128,8 +129,7 @@ class WelcomeScreen extends StatelessWidget {
               context,
               MaterialPageRoute(
                   builder: (context) => RegisterScreen(
-                        registrarUsuario:
-                            SignUp(UserRestRepository()),
+                        registrarUsuario: SignUp(UserRestRepository()),
                       )),
             );
           },
@@ -158,7 +158,10 @@ class WelcomeScreen extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => LoginScreen()),
+              MaterialPageRoute(
+                  builder: (context) => LoginScreen(
+                        login: Login(UserRestRepository()),
+                      )),
             );
           },
           style: OutlinedButton.styleFrom(

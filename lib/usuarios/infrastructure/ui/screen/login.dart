@@ -1,17 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_marketplus/usuarios/app/login.dart';
+import 'package:frontend_marketplus/usuarios/domain/model/auth_response.dart';
+import 'package:frontend_marketplus/usuarios/domain/model/login_request.dart';
+import 'package:frontend_marketplus/usuarios/infrastructure/ui/screen/home.dart';
 import '../../../../colors.dart';
 import '../widget/imput_text.dart';
 import 'forgot_password.dart';
 import '../widget/social_login_buttons.dart';
 import '../utils/validators.dart';
 
-class LoginScreen extends StatelessWidget {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  bool _isLoading = false;
+class LoginScreen extends StatefulWidget {
+  final Login login;
 
-  LoginScreen({super.key});
+  LoginScreen({super.key, required this.login});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final TextEditingController _emailController = TextEditingController();
+
+  final TextEditingController _passwordController = TextEditingController();
+
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +177,8 @@ class LoginScreen extends StatelessWidget {
               backgroundColor: AppColors.secondaryColor,
               foregroundColor: Colors.black,
               side: BorderSide(color: Theme.of(context).primaryColor, width: 2),
-              textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              textStyle:
+                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               padding: const EdgeInsets.symmetric(vertical: 16.0),
             ),
             child: _isLoading
@@ -175,7 +190,30 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  void _login(BuildContext context) {
-    // Implementation of the login logic
+  void _login(BuildContext context) async {
+    if (_formKey.currentState!.validate()) {
+      _isLoading = true;
+      (context as Element).markNeedsBuild();
+
+      try {
+        final loginRequest = LoginRequest(
+          email: _emailController.text,
+          password: _passwordController.text,
+        );
+        AuthResponse user = await widget.login.run(loginRequest);
+        setState(() => _isLoading = false);
+
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => HomeScreen(user: user),
+        ));
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error de autenticación')),
+        );
+      } finally {
+        _isLoading = false;
+        (context as Element).markNeedsBuild();
+      }
+    }
   }
 }
