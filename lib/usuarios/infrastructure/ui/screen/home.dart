@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final screens = [
-      const StoreScreen(),
+      StoreScreen(authResponse: widget.user),
       const OffersScreen(),
       const ProfileScreen(),
       const DeliveryScreen(),
