@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_marketplus/usuarios/domain/model/user.dart';
-import '../widget/search_bar.dart';
-import '../widget/navigation_bar.dart';
+import 'package:frontend_marketplus/usuarios/domain/model/auth_response.dart';
+import 'package:frontend_marketplus/usuarios/infrastructure/ui/screen/delivery_screen.dart';
+import 'package:frontend_marketplus/usuarios/infrastructure/ui/screen/offers_screen.dart';
+import 'package:frontend_marketplus/usuarios/infrastructure/ui/screen/profile_screen.dart';
+import 'package:frontend_marketplus/usuarios/infrastructure/ui/screen/store_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  final User? user;
+  final AuthResponse? user;
 
   static const String routeName = "HomeScreen";
 
@@ -15,12 +17,51 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
+    final screens = [
+      const StoreScreen(),
+      const OffersScreen(),
+      const ProfileScreen(),
+      const DeliveryScreen(),
+    ];
+
     return Scaffold(
       appBar: _buildAppBar(context),
-      body: _buildBodyContent(context),
-      bottomNavigationBar: CustomNavigationBar(user: widget.user),
+      body: IndexedStack(
+        index: selectedIndex,
+        children: screens,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: selectedIndex,
+        onTap: (index) {
+          setState(() {
+            selectedIndex = index;
+          });
+        },
+        selectedItemColor: Colors.black,
+        items: [
+          BottomNavigationBarItem(
+            icon: ImageIcon(AssetImage('assets/icono_tienda.png')),
+            label: 'Mi tienda',
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(AssetImage('assets/icono_home.png')),
+            label: 'Inicio',
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(AssetImage('assets/icono_usuario.png')),
+            label: 'Perfil',
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(AssetImage('assets/icono_carrito.png')),
+            label: 'Pedidos',
+          ),
+        ],
+      ),
     );
   }
 
@@ -30,33 +71,6 @@ class _HomeScreenState extends State<HomeScreen> {
       elevation: 0,
       toolbarHeight: 50,
       iconTheme: const IconThemeData(color: Colors.white),
-    );
-  }
-
-  Widget _buildBodyContent(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: SearchBarP(
-            controller: TextEditingController(),
-            onSearch: (value) {
-              print("Buscar: $value");
-            },
-          ),
-        ),
-        Expanded(
-          child: Center(
-            child: Column(
-              children: [
-                Text('Funcionaaa'),
-                Text("name: ${widget.user!.name}"),
-                Text("email: ${widget.user!.email}"),
-              ],
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
