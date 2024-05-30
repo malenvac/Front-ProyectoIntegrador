@@ -13,13 +13,13 @@ class Product {
     required this.category,
   });
 
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
-        name: json["name"],
-        price: BigDecimal.fromJson(json["price"]),
-        quantity: json["quantity"],
-        description: json["description"],
-        category: json["category"],
-      );
+ factory Product.fromJson(Map<String, dynamic> json) => Product(
+  name: json["name"],
+  price: BigDecimal.fromJson(json["price"]), // Asegúrate de que aquí maneja tanto String como double
+  quantity: json["quantity"],
+  description: json["description"],
+  category: json["category"],
+);
 
   Map<String, dynamic> toJson() => {
         "name": name,
@@ -35,7 +35,18 @@ class BigDecimal {
 
   BigDecimal(this.value);
 
-  factory BigDecimal.fromJson(String json) => BigDecimal(json);
+  factory BigDecimal.fromJson(dynamic json) {
+    if (json is double) {
+      return BigDecimal(json.toString());
+    } else if (json is String) {
+      return BigDecimal(json);
+    } else {
+      throw FormatException('Unexpected type for BigDecimal');
+    }
+  }
+  double toDouble() {
+    return double.tryParse(value) ?? 0.0;  // Convertir el valor String a double, con un valor predeterminado si falla la conversión
+  }
 
   String toJson() => value;
 }

@@ -135,35 +135,29 @@ class EventCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Stack(
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            product.name,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+      child: Padding(
+        padding: const EdgeInsets.all(10),  
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              product.name,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,  
               ),
-            ],
-          ),
-        ],
+              overflow: TextOverflow.ellipsis,
+            ),
+            SizedBox(height: 5),  
+            Text(
+              '\$${product.price.value}', 
+              style: TextStyle(
+                color: Colors.black54,
+                fontSize: 14,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
