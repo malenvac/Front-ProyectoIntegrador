@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'usuarios/infrastructure/ui/screen/welcome.dart';
+import 'stores/ui/screen/store_creation_screen.dart'; // Importa la nueva pantalla
 import 'colors.dart';
 
 void main() {
@@ -26,7 +27,11 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const WelcomeScreen(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const WelcomeScreen(),
+        '/create-store': (context) => StoreCreationScreen(), // Añade la nueva ruta
+      },
     );
   }
 }

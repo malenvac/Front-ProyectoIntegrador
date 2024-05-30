@@ -5,6 +5,7 @@ import 'package:frontend_marketplus/usuarios/infrastructure/rest/user_rest_repos
 import '../../../../colors.dart';
 import 'login.dart';
 import 'sing_in.dart';
+import 'store_creation_screen.dart'; // Importa la nueva pantalla
 import '../widget/social_login_buttons.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -104,6 +105,7 @@ class WelcomeScreen extends StatelessWidget {
           ),
           _buildRegisterButton(context),
           _buildLoginButton(context),
+          _buildCreateStoreButton(context), // Añade el botón aquí
           const SizedBox(height: 40.0),
           Padding(
             padding: const EdgeInsets.only(top: 20.0),
@@ -175,6 +177,31 @@ class WelcomeScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 16.0),
           ),
           child: const Text('Iniciar sesión'),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCreateStoreButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 40.0),
+      child: SizedBox(
+        width: 218.0,
+        child: OutlinedButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/create-store'); // Navega a la pantalla de creación de tienda
+          },
+          style: OutlinedButton.styleFrom(
+            backgroundColor: AppColors.secondaryColor,
+            foregroundColor: Colors.black,
+            side: BorderSide(color: Theme.of(context).primaryColor, width: 2),
+            textStyle: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+          ),
+          child: const Text('Crear Tienda'),
         ),
       ),
     );
